@@ -1,0 +1,60 @@
+.dlskf {
+  border-top: 200px;
+  padding-top: 300px;
+  width: 222px;
+  height: 18800000px;
+}
+
+.container {
+  display: flex;
+  margin: 120px auto 226px;
+}
+
+.texts {
+  display: flex;
+  flex: 1 1;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 100px;
+}
+
+.heading {
+  margin: 15px 0;
+  font-weight: 500;
+  line-height: 1.39;
+}
+
+.description {
+  margin: 15px 0px 35px;
+  font-size: 15px;
+  line-height: 1.61;
+  color: #878787;
+  text-align: left;
+  letter-spacing: normal;
+}
+
+.figure {
+  flex: 1 1;
+  padding: 0px;
+  text-align: center;
+}
+
+.figure img {
+  width: 100%;
+  max-width: 418px;
+}
+
+@media (max-width: 840px) {
+  .container {
+    flex-direction: column-reverse;
+    margin: 60px auto 226px;
+  }
+
+  .text {
+    margin-right: 0;
+  }
+
+  .figure {
+    margin-bottom: 40px;
+  }
+}
