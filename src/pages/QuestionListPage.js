@@ -4,7 +4,7 @@ import { getQuestions } from "../api";
 import DateText from "../components/DateText";
 import ListPage from "../components/ListPage";
 import Warn from "../components/Warn";
-import Card from "../components/Card";
+import Card from "../../components/Card";
 import Avatar from "../components/Avatar";
 import styles from "./QuestionListPage.module.css";
 import searchBarStyles from "../components/SearchBar.module.css";

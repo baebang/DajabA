@@ -6,7 +6,14 @@ import Lined from "../components/Lined";
 import styles from "./HomePage.module.css";
 import landingImg from "../assets/landing.svg";
 
+import { useRecoilState } from 'recoil';
+import { Login } from '../recoil/loginCheck';
+
+
 function HomePage() {
+
+  const [check, setCheck] = useRecoilState(Login);
+
   const onGoogleClick = async (event) => {
     const {
       target: { name },
@@ -19,6 +26,7 @@ function HomePage() {
 
     const data = await authService.signInWithPopup(provider);
     console.log(data);
+    setCheck(true);
 
     alert("로그인에 성공하였습니다!");
   };

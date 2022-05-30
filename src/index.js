@@ -1,4 +1,9 @@
 import ReactDOM from 'react-dom';
 import Main from './Main';
 
-ReactDOM.render(<Main />, document.getElementById('root'));
+import { RecoilRoot } from 'recoil';
+ReactDOM.render(
+  <RecoilRoot>
+    <Main />
+  </RecoilRoot>
+  , document.getElementById('root'));
