@@ -1,37 +1,61 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Button from "../components/Button";
-import Container from "../components/Container";
-
 import styled from "@emotion/styled";
-
 import interview from "../assets/eyetracking_Background.png";
+
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest function.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
 
 function EyeTracking() {
   const [toggle, setToggle] = useState(true);
   const [hide, setHide] = useState(true);
   const [ing, setIng] = useState(true);
   const webgazer = window.webgazer;
+  const [count, setCount] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
 
-  const startLookTime = Number.POSITIVE_INFINITY;
+  const TOP_CUTOFF1 = window.innerHeight / 4;
+  const TOP_CUTOFF2 = window.innerHeight / 8;
 
-  const element = document.getElementById("background");
-  console.log("other.top", element.getBoundingClientRect().top);
-  // const elementTop = element.getBoundingClientRect();
-  // const relativeTop = clientRect.top;
-  const elementTop = 108.09375;
+  // const WIDTH_CUTOFF1 = window.innerWidth / 4;
+  // const WIDTH_CUTOFF2 = window.innerWidth / 12;
 
   useEffect(() => {
     alert(
       "시선학습이 필요합니다. \n 시선을 마우스 커서에 맞추시고 클릭을 통해 트랙킹을 진행해 주세요."
     );
 
-    // "시선학습이 필요합니다. \n 시선을 마우스 커서에 맞추시고 클릭을 통해 트랙킹을 진행해 주세요."
-
     return () => {
       FiterButton("close");
       setToggle(true);
     };
   }, []);
+
+  useInterval(
+    () => {
+      // Your custom logic here
+      setCount(count + 1);
+    },
+    isRunning ? 1000 : null
+  );
+
   const FiterButton = (type) => {
     switch (type) {
       case "start": {
@@ -40,14 +64,14 @@ function EyeTracking() {
           .setGazeListener((data, timestamp) => {
             if (data == null) return;
 
-            // if (data.y >= elementTop &&  data.y <= elementTop+1200){
-            //   //여기서  타임이 돌어야 합니다.요
-            //   startLookTime = timestamp
-            // }
-            // if (data.x >= elementTop &&  data.x <= elementTop+500){
-            //   //여기서  타임이 돌어야 합니다.요
-            //   startLookTime = timestamp
-            // }
+            if (TOP_CUTOFF2 < data.y && data.y < TOP_CUTOFF1) {
+              //여기서  타임이 돌어야 합니다.요
+              console.log(data.y);
+              setIsRunning(true);
+            } else {
+              //멈춰야함
+              setIsRunning(false);
+            }
           })
           .begin();
 
@@ -79,7 +103,6 @@ function EyeTracking() {
       case "close": {
         webgazer.end();
         setToggle(true);
-
         break;
       }
     }
@@ -87,9 +110,16 @@ function EyeTracking() {
 
   return (
     <ContainerCustom>
-      <div id="background">
-        <img id="background-img" src={interview} />
-      </div>
+      <div
+        style={{
+          backgroundImage: `url(${interview})`,
+          backgroundPosition: "center",
+          backgroundSize: "contain",
+          backgroundRepeat: "no-repeat",
+          width: "100vw",
+          height: "75.5vh",
+        }}
+      />
 
       <div id="button-area">
         {toggle === true ? (
@@ -116,6 +146,7 @@ function EyeTracking() {
             <Button id="google" onClick={() => FiterButton("close")}>
               녹화 종료
             </Button>
+            <h1>{count}</h1>
           </div>
         )}
       </div>
@@ -130,12 +161,6 @@ const ContainerCustom = styled.div`
   flex-direction: column;
   width: 100vw;
   align-items: center;
-
-  #background-img {
-    width: 1200px;
-    height: 800px;
-    background-size: cover;
-  }
 
   #button-area {
     display: flex;

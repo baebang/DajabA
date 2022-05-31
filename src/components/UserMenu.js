@@ -29,11 +29,9 @@ function UserMenu() {
       </button>
       {isOpen && (
         <ul className={styles.popup}>
-          <Link to="/wishlist">
+          <Link to="/Mypage">
             <li>마이페이지</li>
           </Link>
-          <li className={styles.disabled}>회원가입</li>
-          <li className={styles.disabled}>로그아웃</li>
         </ul>
       )}
     </div>
