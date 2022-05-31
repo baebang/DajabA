@@ -11,28 +11,43 @@ function EyeTracking() {
   const [hide, setHide] = useState(true);
   const [ing, setIng] = useState(true);
   const webgazer = window.webgazer;
-  
+
+  const startLookTime = Number.POSITIVE_INFINITY;
+
+  const element = document.getElementById("background");
+  console.log("other.top", element.getBoundingClientRect().top);
+  // const elementTop = element.getBoundingClientRect();
+  // const relativeTop = clientRect.top;
+  const elementTop = 108.09375;
 
   useEffect(() => {
     alert(
       "시선학습이 필요합니다. \n 시선을 마우스 커서에 맞추시고 클릭을 통해 트랙킹을 진행해 주세요."
     );
 
+    // "시선학습이 필요합니다. \n 시선을 마우스 커서에 맞추시고 클릭을 통해 트랙킹을 진행해 주세요."
+
     return () => {
       FiterButton("close");
       setToggle(true);
     };
   }, []);
-
   const FiterButton = (type) => {
     switch (type) {
       case "start": {
         setToggle(false);
         webgazer
-          .setGazeListener((data, elapsedTime) => {
-            if (data === null) {
-              return;
-            }
+          .setGazeListener((data, timestamp) => {
+            if (data == null) return;
+
+            // if (data.y >= elementTop &&  data.y <= elementTop+1200){
+            //   //여기서  타임이 돌어야 합니다.요
+            //   startLookTime = timestamp
+            // }
+            // if (data.x >= elementTop &&  data.x <= elementTop+500){
+            //   //여기서  타임이 돌어야 합니다.요
+            //   startLookTime = timestamp
+            // }
           })
           .begin();
 
@@ -72,7 +87,9 @@ function EyeTracking() {
 
   return (
     <ContainerCustom>
-      <img id="background-img" src={interview} />
+      <div id="background">
+        <img id="background-img" src={interview} />
+      </div>
 
       <div id="button-area">
         {toggle === true ? (
