@@ -12,9 +12,9 @@ export default function Main() {
       <App>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          {/* <Route path="/GossipMeasure" element={<GossipMeasure />} /> */}
+          <Route path="/GossipMeasure" element={<GossipMeasure />} />
           <Route path="/EyeTracking" element={<EyeTracking />} />
-          {/* <Route path="/SpeechFunction" element={<SpeechFunction />} /> */}
+          <Route path="/SpeechFunction" element={<SpeechFunction />} />
           <Route path="/Mypage" element={<Mypage />} />
         </Routes>
       </App>
