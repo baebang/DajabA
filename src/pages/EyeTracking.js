@@ -37,8 +37,9 @@ function EyeTracking() {
   const TOP_CUTOFF1 = window.innerHeight / 4;
   const TOP_CUTOFF2 = window.innerHeight / 8;
 
-  const UidCheck = useRecoilValue(setUid);
-  console.log("사용자 UID 확인하쇼" + UidCheck);
+  // const UidCheck = useRecoilValue(setUid);
+  // console.log("사용자 UID 확인하쇼" + UidCheck);
+  // 확인용
 
   // const WIDTH_CUTOFF1 = window.innerWidth / 4;
   // const WIDTH_CUTOFF2 = window.innerWidth / 12;
@@ -61,8 +62,6 @@ function EyeTracking() {
     },
     isRunning ? 1000 : null
   );
-
-  useInterval();
 
   const FiterButton = (type) => {
     switch (type) {

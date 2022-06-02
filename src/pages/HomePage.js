@@ -1,4 +1,4 @@
-import { authService, firebaseInstance } from "./firebase";
+import { authService, firebaseInstance, firestore } from "./firebase";
 
 import Button from "../components/Button";
 import Container from "../components/Container";
@@ -31,9 +31,18 @@ function HomePage() {
     setCheck(true);
     setUID(data.user.uid);
 
+    // uidDB = data.user.uid;
+    // nameDB = data.user.displayName;
+    const UsersetDB = firestore.collection("Mypage");
+    UsersetDB.doc(data.user.uid).set({
+      uid: data.user.uid,
+      name: data.user.displayName,
+    });
+
     alert(data.user.displayName + "님 환영합니다. \n 로그인에 성공하였습니다!");
   };
 
+  //로그아웃버튼
   // const onLogOutClick = () => {
   //   authService.signOut();
   //    check = 0;
