@@ -6,13 +6,12 @@ import Lined from "../components/Lined";
 import styles from "./HomePage.module.css";
 import landingImg from "../assets/landing.svg";
 
-import { useRecoilState } from 'recoil';
-import { Login } from '../recoil/loginCheck';
-
+import { useRecoilState } from "recoil";
+import { Login, setUid } from "../recoil/loginCheck";
 
 function HomePage() {
-
   const [check, setCheck] = useRecoilState(Login);
+  const [uid, setUID] = useRecoilState(setUid);
 
   const onGoogleClick = async (event) => {
     const {
@@ -26,9 +25,13 @@ function HomePage() {
 
     const data = await authService.signInWithPopup(provider);
     console.log(data);
-    setCheck(true);
+    //data.user.uid
+    //uid에 맞는 디비가 없다면 셀을 만들고 있다면 가만히 있어라
 
-    alert("로그인에 성공하였습니다!");
+    setCheck(true);
+    setUID(data.user.uid);
+
+    alert(data.user.displayName + "님 환영합니다. \n 로그인에 성공하였습니다!");
   };
 
   // const onLogOutClick = () => {

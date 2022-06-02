@@ -3,6 +3,9 @@ import Button from "../components/Button";
 import styled from "@emotion/styled";
 import interview from "../assets/eyetracking_Background.png";
 
+import { useRecoilValue } from "recoil";
+import { setUid } from "../recoil/loginCheck";
+
 function useInterval(callback, delay) {
   const savedCallback = useRef();
 
@@ -34,6 +37,9 @@ function EyeTracking() {
   const TOP_CUTOFF1 = window.innerHeight / 4;
   const TOP_CUTOFF2 = window.innerHeight / 8;
 
+  const UidCheck = useRecoilValue(setUid);
+  console.log("사용자 UID 확인하쇼" + UidCheck);
+
   // const WIDTH_CUTOFF1 = window.innerWidth / 4;
   // const WIDTH_CUTOFF2 = window.innerWidth / 12;
 
@@ -50,11 +56,13 @@ function EyeTracking() {
 
   useInterval(
     () => {
-      // Your custom logic here
+      // 내가 원하는 좌표에 시선이 들어오면 카운트 처리되는 부분
       setCount(count + 1);
     },
     isRunning ? 1000 : null
   );
+
+  useInterval();
 
   const FiterButton = (type) => {
     switch (type) {
@@ -90,6 +98,7 @@ function EyeTracking() {
       }
 
       case "stop": {
+        //uid셀에 저장할거임
         if (ing === true) {
           webgazer.pause();
           setIng(false);
