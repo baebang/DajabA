@@ -9,9 +9,16 @@ import landingImg from "../assets/landing.svg";
 import { useRecoilState } from "recoil";
 import { Login, setUid } from "../recoil/loginCheck";
 
+import moment from "moment";
+// 안써도 자동으로 한국 시간을 불러온다. 명확하게 하기 위해 import
+import "moment/locale/ko";
+
 function HomePage() {
   const [check, setCheck] = useRecoilState(Login);
   const [uid, setUID] = useRecoilState(setUid);
+
+  const nowTime = moment().format("YYYYMMDDHHmmss");
+  console.log(nowTime);
 
   const onGoogleClick = async (event) => {
     const {
@@ -25,8 +32,6 @@ function HomePage() {
 
     const data = await authService.signInWithPopup(provider);
     console.log(data);
-    //data.user.uid
-    //uid에 맞는 디비가 없다면 셀을 만들고 있다면 가만히 있어라
 
     setCheck(true);
     setUID(data.user.uid);
@@ -34,12 +39,35 @@ function HomePage() {
     // uidDB = data.user.uid;
     // nameDB = data.user.displayName;
     const UsersetDB = firestore.collection("Mypage");
-    UsersetDB.doc(data.user.uid).set({
-      uid: data.user.uid,
-      name: data.user.displayName,
-    });
+    const CounterDB = firestore
+      .collection("Mypage")
+      .doc(data.user.uid)
+      .collection("History");
 
-    alert(data.user.displayName + "님 환영합니다. \n 로그인에 성공하였습니다!");
+    UsersetDB.doc(data.user.uid)
+      .get()
+      .then((doc) => {
+        // 같은 document가 있는지 확인한다.
+        if (doc.exists) {
+          // 있다면 document의 데이터를 가져옴
+          console.log(doc.data());
+        }
+        //없다면 만들어 준다.
+        else
+          UsersetDB.doc(data.user.uid).set({
+            uid: data.user.uid,
+            name: data.user.displayName,
+          });
+
+        CounterDB.doc("Welcom").set({
+          lala: "ss",
+        });
+      });
+
+    alert(
+      data.user.displayName +
+        "님 당신의 취업을 언제나 응원합니다. \n 로그인에 성공하였습니다!"
+    );
   };
 
   //로그아웃버튼

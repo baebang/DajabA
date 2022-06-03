@@ -3,6 +3,12 @@ import Button from "../components/Button";
 import styled from "@emotion/styled";
 import interview from "../assets/eyetracking_Background.png";
 
+import { firestore } from "./firebase";
+
+import moment from "moment";
+// 안써도 자동으로 한국 시간을 불러온다. 명확하게 하기 위해 import
+import "moment/locale/ko";
+
 import { useRecoilValue } from "recoil";
 import { setUid } from "../recoil/loginCheck";
 
@@ -32,17 +38,29 @@ function EyeTracking() {
   const [ing, setIng] = useState(true);
   const webgazer = window.webgazer;
   const [count, setCount] = useState(0);
+  const [RunningTime, setRunningTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [RunningTimeSW, setRunningTimeSW] = useState(false);
 
   const TOP_CUTOFF1 = window.innerHeight / 4;
   const TOP_CUTOFF2 = window.innerHeight / 8;
 
-  // const UidCheck = useRecoilValue(setUid);
+  const UidCheck = useRecoilValue(setUid);
   // console.log("사용자 UID 확인하쇼" + UidCheck);
   // 확인용
 
   // const WIDTH_CUTOFF1 = window.innerWidth / 4;
   // const WIDTH_CUTOFF2 = window.innerWidth / 12;
+
+  const CounterDB = firestore
+    .collection("Mypage")
+    .doc(UidCheck)
+    .collection("History");
+
+  const nowTime = moment().format("YYYYMMDDHHmmss");
+  //문서 이름
+  const Day = moment().format("YYYY-MM-DD HH:mm");
+  //기록 날짜
 
   useEffect(() => {
     alert(
@@ -63,10 +81,18 @@ function EyeTracking() {
     isRunning ? 1000 : null
   );
 
+  useInterval(
+    () => {
+      setRunningTime(RunningTime + 1);
+    },
+    RunningTimeSW ? 1000 : null
+  );
+
   const FiterButton = (type) => {
     switch (type) {
       case "start": {
         setToggle(false);
+        setRunningTimeSW(true);
         webgazer
           .setGazeListener((data, timestamp) => {
             if (data == null) return;
@@ -86,6 +112,7 @@ function EyeTracking() {
       }
 
       case "hide": {
+        //카메라 숨기기
         if (hide === true) {
           webgazer.showVideo(false);
           setHide(false);
@@ -97,18 +124,33 @@ function EyeTracking() {
       }
 
       case "stop": {
-        //uid셀에 저장할거임
+        //일시정지 버튼
         if (ing === true) {
           webgazer.pause();
           setIng(false);
+          setRunningTimeSW(false);
+
+          //시간을 저장합니다.
+          //풀지못한 문제: 필드값을 랜덤으로 설정하기 여러 필드를 추가하기 더 좋은 방법이 있는지 확인 (풀었음)
+          //기존 UID컬렉션에 하위 컬렉션을 만들어 히스토리 관리하도록 했음 칭찬부탁~ (제리인사)
+          var carculator = (count / RunningTime) * 100;
+
+          CounterDB.doc(nowTime + " Eye").set({
+            EyeTrackingcounter: count,
+            runnningTime: RunningTime,
+            carculator: carculator,
+            time: Day,
+          });
         } else {
           webgazer.resume();
           setIng(true);
         }
+
         break;
       }
 
       case "close": {
+        //녹화종료
         webgazer.end();
         setToggle(true);
         break;
@@ -155,6 +197,7 @@ function EyeTracking() {
               녹화 종료
             </Button>
             <h1>{count}</h1>
+            <h1>{RunningTime}</h1>
           </div>
         )}
       </div>
