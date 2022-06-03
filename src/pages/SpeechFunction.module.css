@@ -15,8 +15,17 @@
   }
   
   .container {
-    display: flex;
+    display: grid;
+    align-items: center;
     margin: 120px auto 226px;
+  }
+
+  .box {
+    box-shadow: -4px 10px 35px -1px rgba(0, 0, 0, 0.75);
+    min-height: 20rem;
+    margin: 30px;
+    padding: 20px;
+    border-radius: 5px;
   }
   
   .texts {
