@@ -135,7 +135,7 @@ function SpeechFunction() {
                         <strong>Start/Stop</strong>
                     </button>
                     <button onClick={handleSaveNote} disabled={!note}>
-                        <strong>Save Note</strong>
+                        <strong>Analyze Interview</strong>
                     </button>
                     <p>{note}</p>
                 </div>
