@@ -136,11 +136,11 @@ function EyeTracking() {
           var carculator = (count / RunningTime) * 100;
 
           CounterDB.doc(nowTime).set({
-            EyeTrackingcounter: count,
+            eyeTrackingcounter: count,
             runnningTime: RunningTime,
             carculator: carculator,
             time: Day,
-            Type: "Eye",
+            type: "Eye",
           });
         } else {
           webgazer.resume();
