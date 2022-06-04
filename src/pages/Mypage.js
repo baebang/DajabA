@@ -4,6 +4,9 @@ import { useRecoilValue } from "recoil";
 import { setUid } from "../recoil/loginCheck";
 import ListPage from "../components/ListPage";
 
+import Eyeimage from "../assets/icon--algorithm.svg";
+import speechimage from "../assets/icon--automation.svg";
+
 import styled from "@emotion/styled";
 
 import { firestore, authService } from "./firebase";
@@ -35,7 +38,7 @@ function Mypage() {
 
   const FirstFilterHandler = (data) => {
     return data.filter((item) => {
-      return item.EyeTrackingcounter !== undefined;
+      return item.lala === undefined;
     });
   };
 
@@ -49,46 +52,125 @@ function Mypage() {
       <ProfileContatiner>
         {FirstFilterHandler(ProfileData).map((item, key) => {
           return (
-            <div id="profile-box" key={key}>
-              {/* 핑크 부분 */}
-              <div id="header-point" />
+            <div key={key}>
+              {item.type == "Eye" ? (
+                <div id="profile-box">
+                  {/* 핑크 부분 */}
+                  <div id="header-point">
+                    <TitleText>{item.type}</TitleText>
+                  </div>
 
-              {/* 데이터 출력부분 */}
-              <div id="profile-data-filed">
-                {/* 왼쪽 */}
-                <div id="left-area">
-                  <img
-                    src=""
-                    style={{
-                      width: 150,
-                      height: 150,
-                    }}
-                  />
+                  {/* 데이터 출력부분 */}
+                  <div id="profile-data-filed">
+                    {/* 왼쪽 */}
+                    <div id="left-area">
+                      <img
+                        src={Eyeimage} // 스피크 이미지 넣는부분
+                        style={{
+                          width: 150,
+                          height: 150,
+                        }}
+                      />
 
-                  <span>Eyetricking Result</span>
-                  <span>면접 시, 불안정한 시선은 신뢰도를 어쩌고 저꺼고</span>
+                      <span>Eyetricking Result</span>
+                      <span>
+                        면접 시, 불안정한 시선은 신뢰도를 어쩌고 저꺼고
+                      </span>
+                    </div>
+
+                    {/* 오른쪽 */}
+                    <div id="right-area">
+                      <TitleText>{item.time}</TitleText>
+
+                      <div>
+                        <TitleText>총 녹화 시간</TitleText>
+                        <ContentText>{item.runnningTime}</ContentText>
+                      </div>
+
+                      <div>
+                        <TitleText>시선처리 한 시간</TitleText>
+                        <ContentText>{item.EyeTrackingcounter}</ContentText>
+                      </div>
+
+                      <div>
+                        <TitleText>전체 퍼센데이지</TitleText>
+                        <ContentText>{item.carculator}</ContentText>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-
-                {/* 오른쪽 */}
-                <div id="right-area">
-                  <TitleText>{item.time}</TitleText>
-
-                  <div>
-                    <TitleText>총 녹화 시간</TitleText>
-                    <ContentText>{item.runnningTime}</ContentText>
+              ) : (
+                <div id="profile-box" key={key}>
+                  {/* 핑크 부분 */}
+                  <div id="header-point">
+                    <TitleText>{item.type}</TitleText>
                   </div>
 
-                  <div>
-                    <TitleText>시선처리 한 시간</TitleText>
-                    <ContentText>{item.EyeTrackingcounter}</ContentText>
-                  </div>
+                  {/* 데이터 출력부분 */}
+                  <div id="profile-data-filed">
+                    {/* 왼쪽 */}
+                    <div id="left-area">
+                      <img
+                        src={speechimage} // 스피크 이미지 넣는 부분
+                        style={{
+                          width: 150,
+                          height: 150,
+                        }}
+                      />
 
-                  <div>
-                    <TitleText>전체 퍼센데이지</TitleText>
-                    <ContentText>{item.carculator}</ContentText>
+                      <span>Speech Result</span>
+                      <span>
+                        면접 시, 불안정한 시선은 신뢰도를 어쩌고 저꺼고
+                      </span>
+                    </div>
+
+                    {/* 오른쪽 */}
+                    <div id="right-area">
+                      <TitleText>{item.time}</TitleText>
+
+                      <div style={{ display: "flex", flexDirection: "row" }}>
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <div>
+                            <TitleText>음</TitleText>
+                            <ContentText>{item.um}</ContentText>
+                          </div>
+
+                          <div>
+                            <TitleText>아</TitleText>
+                            <ContentText>{item.aa}</ContentText>
+                          </div>
+
+                          <div>
+                            <TitleText>잠시만요</TitleText>
+                            <ContentText>{item.wating}</ContentText>
+                          </div>
+                        </div>
+
+                        <div
+                          style={{ display: "flex", flexDirection: "column" }}
+                        >
+                          <div>
+                            <TitleText>그니까</TitleText>
+                            <ContentText>{item.so}</ContentText>
+                          </div>
+
+                          <div>
+                            <TitleText>죄송함니다</TitleText>
+                            <ContentText>{item.sorry}</ContentText>
+                          </div>
+
+                          <div>
+                            <TitleText>모르겠습니다</TitleText>
+                            <ContentText>{item.donknow}</ContentText>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           );
         })}
@@ -117,10 +199,13 @@ const ProfileContatiner = styled.div`
     margin: 10px;
 
     #header-point {
+      display: flex;
       min-width: 500px;
       height: 31.55px;
       background: #d9d9d9;
       border-radius: 28px 28px 0px 0px;
+      justify-content: center;
+      align-items: center;
     }
 
     #profile-data-filed {
@@ -143,7 +228,7 @@ const ProfileContatiner = styled.div`
         justify-content: center;
 
         div {
-          min-width: 500px;
+          min-width: 200px;
           justify-content: space-between;
           display: flex;
           padding: 10px;

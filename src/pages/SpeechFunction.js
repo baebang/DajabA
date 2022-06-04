@@ -126,18 +126,18 @@ function SpeechFunction() {
     while (pos6 !== -1) {
       count6++;
       pos6 = note.indexOf(search6, pos6 + 1);
-
-      CounterDB.doc(nowTime).set({
-        um: count1,
-        aa: count2,
-        wating: count3,
-        so: count4,
-        sorry: count5,
-        donknow: count6,
-        time: Day,
-        type: "speech",
-      });
     }
+
+    CounterDB.doc(nowTime).set({
+      um: count1,
+      aa: count2,
+      wating: count3,
+      so: count4,
+      sorry: count5,
+      donknow: count6,
+      time: Day,
+      type: "speech",
+    });
 
     console.log("음 : " + count1);
     console.log("어 : " + count2);
