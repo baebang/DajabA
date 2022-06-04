@@ -135,11 +135,12 @@ function EyeTracking() {
           //기존 UID컬렉션에 하위 컬렉션을 만들어 히스토리 관리하도록 했음 칭찬부탁~ (제리인사)
           var carculator = (count / RunningTime) * 100;
 
-          CounterDB.doc(nowTime + " Eye").set({
+          CounterDB.doc(nowTime).set({
             EyeTrackingcounter: count,
             runnningTime: RunningTime,
             carculator: carculator,
             time: Day,
+            Type: "Eye",
           });
         } else {
           webgazer.resume();
