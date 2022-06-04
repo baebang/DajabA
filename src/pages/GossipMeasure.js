@@ -45,8 +45,9 @@ function GossipMeasure() {
                     화면 끄기
                 </Button>
             </div>
-            
           </div>
+          <br/>
+          <h2><Lined><strong>To be continue</strong></Lined></h2>
         </div>
         
       </Container>
