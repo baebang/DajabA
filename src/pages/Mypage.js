@@ -8,33 +8,6 @@ import styled from "@emotion/styled";
 
 import { firestore, authService } from "./firebase";
 
-const MockData = [
-  {
-    EyeTackingcounter: 2,
-    carculator: 0,
-    runningTime: 42,
-    time: "2022-06-03 23:00",
-  },
-  {
-    EyeTackingcounter: 3,
-    carculator: 0,
-    runningTime: 39,
-    time: "2022-06-03 23:00",
-  },
-  {
-    EyeTackingcounter: 1,
-    carculator: 0,
-    runningTime: 20,
-    time: "2022-06-03 23:00",
-  },
-  {
-    EyeTackingcounter: 1,
-    carculator: 0,
-    runningTime: 20,
-    time: "2022-06-03 23:00",
-  },
-];
-
 function Mypage() {
   const UidCheck = useRecoilValue(setUid);
   const [ProfileData, setProfileData] = useState([]);
@@ -42,24 +15,29 @@ function Mypage() {
   useEffect(() => {
     const CounterDB = firestore.collection("Mypage");
 
-    authService.onAuthStateChanged((res) => {
-      if (res != undefined) {
-        CounterDB.doc(UidCheck)
-          .collection("History")
-          .get()
-          .then((document) => {
-            document.forEach(function (doc) {
-              let docs = doc.data();
-              // console.log("문서의 id :" + doc.id);
+    if (ProfileData.length == 0) {
+      authService.onAuthStateChanged((res) => {
+        if (res != undefined) {
+          CounterDB.doc(UidCheck)
+            .collection("History")
+            .get()
+            .then((document) => {
+              document.forEach(function (doc) {
+                let docs = doc.data();
 
-              // console.log(typeof docs);
-              // setProfileData(test);
-              setProfileData([...Object.values(docs), ...Object.values(docs)]);
+                setProfileData((currentArray) => [...currentArray, docs]);
+              });
             });
-          });
-      }
-    });
+        }
+      });
+    }
   }, []);
+
+  const FirstFilterHandler = (data) => {
+    return data.filter((item) => {
+      return item.EyeTrackingcounter !== undefined;
+    });
+  };
 
   return (
     <>
@@ -68,9 +46,8 @@ function Mypage() {
         title="면접 시뮬레이션 결과"
         description="누적된 데이터를 기반으로 면접의 달인이 되어보세요!"
       />
-
       <ProfileContatiner>
-        {ProfileData.map((item, key) => {
+        {FirstFilterHandler(ProfileData).map((item, key) => {
           return (
             <div id="profile-box" key={key}>
               {/* 핑크 부분 */}
@@ -178,12 +155,12 @@ const ProfileContatiner = styled.div`
 
 const TitleText = styled.span`
   font-size: 17px;
-  font-family: var(--gmarket-sans);
+  font-family: var(—gmarket-sans);
   font-weight: 500;
 `;
 
 const ContentText = styled.span`
   font-size: 17px;
-  font-family: var(--gmarket-sans);
+  font-family: var(—gmarket-sans);
   font-weight: 500;
 `;

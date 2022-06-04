@@ -29,5 +29,5 @@ export const firebaseInstance = firebase;
 export const authService = firebase.auth();
 
 
-export { firestore };
+export { firestore, authService };
 
