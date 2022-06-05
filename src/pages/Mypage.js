@@ -73,9 +73,7 @@ function Mypage() {
                       />
 
                       <span>Eyetricking Result</span>
-                      <span>
-                        면접 시, 불안정한 시선은 신뢰도를 어쩌고 저꺼고
-                      </span>
+                      <span>면접 시, 또렷한 시선으로 신뢰도를 높여보세요.</span>
                     </div>
 
                     {/* 오른쪽 */}
@@ -119,9 +117,7 @@ function Mypage() {
                       />
 
                       <span>Speech Result</span>
-                      <span>
-                        면접 시, 불안정한 시선은 신뢰도를 어쩌고 저꺼고
-                      </span>
+                      <span>어중간한 표현을 줄이도록 노력해 보세요.</span>
                     </div>
 
                     {/* 오른쪽 */}

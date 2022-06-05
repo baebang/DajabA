@@ -2,9 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import personIcon from "../assets/person.png";
 import styles from "./UserMenu.module.css";
+import { useRecoilValue } from "recoil";
+import { Login } from "../recoil/loginCheck";
 
 function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
+  const loginCheck = useRecoilValue(Login);
 
   const handleButtonClick = useCallback((e) => {
     e.stopPropagation();
@@ -29,7 +32,7 @@ function UserMenu() {
       </button>
       {isOpen && (
         <ul className={styles.popup}>
-          <Link to="/Mypage">
+          <Link to={loginCheck && "/Mypage"}>
             <li>마이페이지</li>
           </Link>
         </ul>

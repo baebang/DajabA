@@ -197,8 +197,8 @@ function EyeTracking() {
             <Button id="google" onClick={() => FiterButton("close")}>
               녹화 종료
             </Button>
-            <h1>{count}</h1>
-            <h1>{RunningTime}</h1>
+            {/* <h1>{count}</h1>
+            <h1>{RunningTime}</h1> */}
           </div>
         )}
       </div>
