@@ -82,17 +82,17 @@ function Mypage() {
 
                       <div>
                         <TitleText>총 녹화 시간</TitleText>
-                        <ContentText>{item.runnningTime}</ContentText>
+                        <ContentText>{item.runnningTime}초</ContentText>
                       </div>
 
                       <div>
                         <TitleText>시선처리 한 시간</TitleText>
-                        <ContentText>{item.EyeTrackingcounter}</ContentText>
+                        <ContentText>{item.eyeTrackingcounter}초</ContentText>
                       </div>
 
                       <div>
                         <TitleText>전체 퍼센데이지</TitleText>
-                        <ContentText>{item.carculator}</ContentText>
+                        <ContentText>{Math.ceil(item.carculator)}%</ContentText>
                       </div>
                     </div>
                   </div>
